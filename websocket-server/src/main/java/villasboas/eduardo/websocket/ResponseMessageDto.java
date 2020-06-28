@@ -1,12 +1,12 @@
 package villasboas.eduardo.websocket;
 
-public class Greeting {
+public class ResponseMessageDto {
 
 	private String content;
 
-	public Greeting() {}
+	public ResponseMessageDto() {}
 	
-	public Greeting(String content) {
+	public ResponseMessageDto(String content) {
 		this.content = content;
 	}
 

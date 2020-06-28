@@ -1,13 +1,13 @@
 package villasboas.eduardo.websocket;
 
-public class HelloMessage {
+public class RequestMessageDto {
 
 	private String name;
 
-	public HelloMessage() {
+	public RequestMessageDto() {
 	}
 
-	public HelloMessage(String name) {
+	public RequestMessageDto(String name) {
 		this.name = name;
 	}
 

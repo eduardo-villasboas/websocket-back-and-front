@@ -5,20 +5,20 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
-import villasboas.eduardo.websocket.Greeting;
-import villasboas.eduardo.websocket.HelloMessage;
+import villasboas.eduardo.websocket.ResponseMessageDto;
+import villasboas.eduardo.websocket.RequestMessageDto;
 
 @Controller
-public class GreetingController {
+public class WebSocketController {
 
 	private final SimpMessagingTemplate simpMessagingTemplate;
 
-	public GreetingController(SimpMessagingTemplate simpMessagingTemplate) {
+	public WebSocketController(SimpMessagingTemplate simpMessagingTemplate) {
 		this.simpMessagingTemplate = simpMessagingTemplate;
 	}
 
 	@MessageMapping("/hello")
-	public void greeting(HelloMessage message) throws Exception {
+	public void onReceive(RequestMessageDto message) throws Exception {
 		Thread threadToSend = new Thread(new Runnable() {
 
 			@Override
@@ -29,7 +29,7 @@ public class GreetingController {
 					e.printStackTrace();
 				}
 				simpMessagingTemplate.convertAndSend("/topic/greetings",
-						new Greeting("Hello " + HtmlUtils.htmlEscape(message.getName()) + "!"));
+						new ResponseMessageDto("Hello " + HtmlUtils.htmlEscape(message.getName()) + "!"));
 			}
 
 		});
