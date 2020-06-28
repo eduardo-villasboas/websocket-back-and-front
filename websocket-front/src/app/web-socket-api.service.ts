@@ -2,7 +2,8 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { Injectable } from '@angular/core';
 
-interface HandleMessage {
+interface MessageHandler {
+    connect(): void;
     handleMessage(message: any): void;
 }
 
@@ -12,24 +13,17 @@ export class WebSocketApiService {
     webSocketEntPoint: string = 'http://localhost:8080/ws';
     topic: string = '/topic/greetings';
     stompClient: any;
-    messageHandler: HandleMessage;
 
-    setHandler(appComponent: HandleMessage) {
-        this.messageHandler = appComponent;
-    }
-
-    _connect() {
+    _connect(messageHandler: MessageHandler) {
         console.log("Initialize WebSocket Connection");
         let ws = new SockJS(this.webSocketEntPoint);
         this.stompClient = Stomp.over(ws);
         const _this = this;
         _this.stompClient.connect({}, function (_frame) {
             _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
-                _this.onMessageReceived(sdkEvent);
+                _this.onMessageReceived(sdkEvent, messageHandler);
             });
-            //_this.stompClient.reconnect_delay = 2000;
-        }, this.errorCallBack);
-
+        }, this.errorCallBack.bind(this, messageHandler));
 
     }
 
@@ -42,9 +36,10 @@ export class WebSocketApiService {
     }
 
     errorCallBack(error) {
-        console.log('errorCallBack -> ', error);
+        console.error('error: ', error);
         setTimeout(() => {
-            this._connect();
+            console.log(this, arguments);
+            this._connect(arguments[0]);
         }, 5000);
     }
 
@@ -53,8 +48,8 @@ export class WebSocketApiService {
         this.stompClient.send('/app/hello', {}, JSON.stringify(message));
     }
 
-    onMessageReceived(message) {
+    onMessageReceived(message, messageHandler: MessageHandler) {
         console.log('Message Received from Server -> ', message);
-        this.messageHandler.handleMessage(JSON.stringify(message.body));
+        messageHandler.handleMessage(JSON.stringify(message.body));
     }
 }

@@ -15,11 +15,10 @@ export class AppComponent {
   name: string;
 
   constructor(private webSocketApiService: WebSocketApiService) {
-    webSocketApiService.setHandler(this);
   }
 
   connect() {
-    this.webSocketApiService._connect();
+    this.webSocketApiService._connect(this);
   }
 
   disconnect() {
