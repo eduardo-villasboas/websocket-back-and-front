@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { WebSocketAPI } from './WebSocketAPI';
+import { WebSocketApiService } from './web-socket-api.service';
 
 @Component({
   selector: 'app-root',
@@ -10,25 +10,24 @@ export class AppComponent {
   
   title = 'websocket-front';
 
-  webSocketAPI: WebSocketAPI;
   greeting: any;
   
-  @Input() name: string;
+  name: string;
 
-  ngOnInit() {
-    this.webSocketAPI = new WebSocketAPI(this);
+  constructor(private webSocketApiService: WebSocketApiService) {
+    webSocketApiService.setHandler(this);
   }
 
   connect() {
-    this.webSocketAPI._connect();
+    this.webSocketApiService._connect();
   }
 
   disconnect() {
-    this.webSocketAPI._disconnect();
+    this.webSocketApiService._disconnect();
   }
 
   sendMessage() {
-    this.webSocketAPI._send(this.name);
+    this.webSocketApiService._send(this.name);
   }
 
   handleMessage(message) {

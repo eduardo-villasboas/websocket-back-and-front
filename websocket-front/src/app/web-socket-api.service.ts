@@ -1,16 +1,21 @@
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import { AppComponent } from './app.component';
+import { Injectable } from '@angular/core';
 
-export class WebSocketAPI {
+interface HandleMessage {
+    handleMessage(message: any): void;
+}
+
+@Injectable()
+export class WebSocketApiService {
 
     webSocketEntPoint: string = 'http://localhost:8080/ws';
     topic: string = '/topic/greetings';
     stompClient: any;
-    appComponent: AppComponent;
+    messageHandler: HandleMessage;
 
-    constructor(appComponent: AppComponent) {
-        this.appComponent = appComponent;
+    setHandler(appComponent: HandleMessage) {
+        this.messageHandler = appComponent;
     }
 
     _connect() {
@@ -39,7 +44,7 @@ export class WebSocketAPI {
     errorCallBack(error) {
         console.log('errorCallBack -> ', error);
         setTimeout(() => {
-            this.appComponent.connect();
+            this._connect();
         }, 5000);
     }
 
@@ -50,6 +55,6 @@ export class WebSocketAPI {
 
     onMessageReceived(message) {
         console.log('Message Received from Server -> ', message);
-        this.appComponent.handleMessage(JSON.stringify(message.body));
+        this.messageHandler.handleMessage(JSON.stringify(message.body));
     }
 }

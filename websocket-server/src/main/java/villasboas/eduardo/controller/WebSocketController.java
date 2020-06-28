@@ -13,7 +13,7 @@ import villasboas.eduardo.websocket.RequestMessageDto;
 @Controller
 public class WebSocketController {
 
-	private static final int FIVE_MILISECONDS = 5000;
+	private static final int ONE_SECONDS_IN_MILISECONDS = 1000;
 
 
 	private final SimpMessagingTemplate simpMessagingTemplate;
@@ -35,10 +35,10 @@ public class WebSocketController {
 			public void run() {
 				
 				try {
-					LOGGER.trace("Waiting for {} miliseconds", FIVE_MILISECONDS);
-					Thread.sleep(FIVE_MILISECONDS);
+					LOGGER.trace("Waiting for {} miliseconds", ONE_SECONDS_IN_MILISECONDS);
+					Thread.sleep(ONE_SECONDS_IN_MILISECONDS);
 				} catch (InterruptedException e) {
-					LOGGER.error("Error when waiting thread for {} miliseconds", FIVE_MILISECONDS);
+					LOGGER.error("Error when waiting thread for {} miliseconds", ONE_SECONDS_IN_MILISECONDS);
 				}
 				LOGGER.trace("sending message.");
 				simpMessagingTemplate.convertAndSend("/topic/greetings",
