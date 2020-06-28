@@ -2,20 +2,13 @@
 <div id="main-content" class="container">
 
   <div class="row">
-    <div class="col-md-12">
-      {{ greeting }}
-    </div>
-  </div>
-
-
-  <div class="row">
     
     <div class="col-md-6">
       <form class="form-inline">
         <div class="form-group">
           <label for="connect">WebSocket Connection:</label>
           <button (click)="connect()" class="btn btn-default" type=submit>Connect</button>
-          <button (click)="disconnect()" type=submit disabled>Disconnect</button>
+          <button (click)="disconnect()" type=submit>Disconnect</button>
         </div>
       </form>
     </div>

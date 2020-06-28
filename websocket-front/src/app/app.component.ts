@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { WebSocketApiService } from './web-socket-api.service';
+import { WebSocketApiService, MessageHandler } from './web-socket-api.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements MessageHandler {
   
   title = 'websocket-front';
 
@@ -22,11 +22,11 @@ export class AppComponent {
   }
 
   disconnect() {
-    this.webSocketApiService._disconnect();
+    this.webSocketApiService._disconnect(this);
   }
 
   sendMessage() {
-    this.webSocketApiService._send(this.name);
+    this.webSocketApiService._send(this, this.name);
   }
 
   handleMessage(message) {
