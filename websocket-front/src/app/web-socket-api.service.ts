@@ -1,3 +1,4 @@
+//TODO: install npm install --save @types/stompjs @types/sockjs-client
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { Injectable } from '@angular/core';
@@ -19,7 +20,7 @@ export class WebSocketApiService {
         let ws = new SockJS(this.webSocketEntPoint);
         messageHandler['stompClient'] = Stomp.over(ws);
         const _this = this;
-        messageHandler['stompClient'].connect({}, function (_frame) {
+        messageHandler['stompClient'].connect({'Authorization': 'little-delicious-this-token'}, function (_frame) {
             messageHandler['stompClient'].subscribe(_this.topic, function (sdkEvent) {
                 _this.onMessageReceived(messageHandler, sdkEvent);
             });
